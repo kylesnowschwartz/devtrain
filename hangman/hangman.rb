@@ -103,3 +103,5 @@ class Hangman
 end
 
 hangman = Hangman.new(8, "bottle")
+
+hangman.play if __FILE__==$0 #plays hangman if only called from command line
