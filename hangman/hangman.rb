@@ -1,4 +1,5 @@
 class Hangman
+  attr_reader :word, :lives_remaining, :guessed_letters, :remaining_letters, :board
 
   def initialize(lives, word)
     @word = parse_word(word)
@@ -102,5 +103,3 @@ class Hangman
 end
 
 hangman = Hangman.new(8, "bottle")
-
-hangman.play
