@@ -2,6 +2,8 @@ class Hangman
   attr_reader :word, :lives_remaining, :guessed_letters, :remaining_letters, :board
 
   def initialize(lives, word)
+    raise ArgumentError.new("The number of lives must be greater than zero") unless lives > 0
+    raise ArgumentError.new("The word must have 3 or more letters") unless word.chars.count > 2
     @word = parse_word(word)
     @lives_remaining = lives
     @guessed_letters = []
@@ -57,7 +59,7 @@ class Hangman
   def print_gamestate
     clear_screen
     puts "Thusfar, you've guessed:"
-    p @guessed_letters.uniq
+    puts @guessed_letters.uniq.join(" ")
     puts "You have #{@remaining_letters.length} letters remaining"
     puts "You have #{@lives_remaining} lives remaining"
     print_board
