@@ -5,9 +5,9 @@ class Hangman
     raise ArgumentError.new("The number of lives must be greater than zero") unless lives > 0
     raise ArgumentError.new("The word must have 3 or more letters") unless word.chars.count > 2
     @word = parse_word(word)
-    @lives_remaining = lives
-    @guessed_letters = []
     @remaining_letters = parse_word(word)
+    @guessed_letters = []
+    @lives_remaining = lives
     @board = @word.map {|e| "_"}
   end
 
@@ -25,8 +25,10 @@ class Hangman
 
   def take_turn
     if submit_guess(ask_for_letter)
+      clear_screen
       report_success
     else
+      clear_screen
       report_failure
     end
     print_gamestate
@@ -45,7 +47,14 @@ class Hangman
   end
 
   def ask_for_letter
-    player_guess = gets.chomp
+    alphabet = ('A'..'Z').to_a
+    while user_input = gets.upcase.chomp
+      if alphabet.include?(user_input)
+        return user_input
+      else
+        puts "Please select a single letter in the English alphabet:"
+      end
+    end
   end
 
   def report_success
@@ -57,7 +66,6 @@ class Hangman
   end
 
   def print_gamestate
-    clear_screen
     puts "Thusfar, you've guessed:"
     puts @guessed_letters.uniq.join(" ")
     puts "You have #{@remaining_letters.length} letters remaining"
@@ -96,7 +104,7 @@ class Hangman
   end
 
   def parse_word(word)
-    word.chars
+    word.upcase.chars
   end
 
   def subtract_life
