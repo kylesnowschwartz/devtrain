@@ -9,7 +9,7 @@ class Hangman
     raise ArgumentError.new("The word must have 3 or more letters") unless word.chars.count > 2
     @word = parse_word(word)
     @state = GameState.new(lives, @word)
-    @view = GameView.new(@state)
+    @view = GameView.new(@state) # TODO: inject this as dependancy in constructor
   end
 
   def play

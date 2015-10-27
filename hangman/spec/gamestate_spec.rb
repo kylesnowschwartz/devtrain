@@ -35,13 +35,13 @@ RSpec.describe GameState do
 	describe "#finished?" do
 		context "with lives remaining" do
 			it "returns false" do
-				expect(game.finished?).to be_falsey
+				expect(game.finished?).to be false
 			end
 		end
 
 		context "if no lives remaining" do
 			it "returns true" do
-				expect(game_with_zero_lives.finished?).to be_truthy
+				expect(game_with_zero_lives.finished?).to be true
 			end
 		end
 	end

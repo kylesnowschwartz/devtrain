@@ -25,7 +25,7 @@ class GameState
 	def submit_guess(guess)
 	  @guessed_letters << guess
 	  if @word.include?(guess)
-	    @remaining_letters = @remaining_letters - [guess]
+	    @remaining_letters = @remaining_letters - [guess] # remaining letters/lives as functions
 	    replace_blank_tile_with_guessed_letter(guess)
 	    true
 	  else
