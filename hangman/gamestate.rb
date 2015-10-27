@@ -9,19 +9,6 @@ class GameState
 		@board = @remaining_letters.map {|e| "_"}
 	end
 
-	def print
-	  puts "Thusfar, you've guessed:"
-	  puts @guessed_letters.uniq.join(" ")
-	  puts "You have #{@remaining_letters.length} letters remaining"
-	  puts "You have #{@lives_remaining} lives remaining"
-	  print_board
-	  puts "Guess Again:" unless finished?
-	end
-
-	def print_board
-	  puts @board.join(" ")
-	end
-
 	def subtract_life
 	  @lives_remaining -= 1
 	end

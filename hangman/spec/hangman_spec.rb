@@ -1,15 +1,13 @@
 require './hangman.rb'
 
 RSpec.describe Hangman do
-	before do
-		@hangman = Hangman.new(8, "bottle")
-	end
+	let(:hangman) {Hangman.new(8, "bottle")}
 
 	describe "#initialize" do
 
 		context "with a correct arguments" do
 			it "sets #word to an array of uppercase letters" do
-				expect(@hangman.word).to eq(["B", "O", "T", "T", "L", "E"]) 
+				expect(hangman.word).to eq(["B", "O", "T", "T", "L", "E"]) 
 			end
 		end
 
@@ -25,7 +23,11 @@ RSpec.describe Hangman do
 	end
 
 	describe "#play" do
-		xit "takes at least n turns equal to the amount of uniq letters in word" do
+		before do
+			def 
+		end
+		it "takes at least n turns equal to the amount of uniq letters in word" do
+			hangman.play
 		end
 	end
 end
