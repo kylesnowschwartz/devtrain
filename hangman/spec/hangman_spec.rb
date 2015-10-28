@@ -1,49 +1,82 @@
-require './hangman.rb'
+require_relative "../lib/hangman"
 
 RSpec.describe Hangman do
-	let(:lives) { 8 }
-	let(:word) { "bottle" }
-	let(:state) { GameState.new(lives, word) } #instance double here?
-	# let(:state) { instance_double("GameState") }
-	let(:view) { instance_double("GameView") }
-	let(:hangman) { Hangman.new(view, state) } # check out subject instead of let
+	let(:word) { "bread" }
+	let(:lives) { 4 }
+	subject(:hangman) { Hangman.new(lives, word, input, output) }
+	let(:output) { StringIO.new }
 
-	describe "#initialize" do
-		it "is initialized" do
-			expect{ hangman }.to_not raise_error
+	def random_valid_word
+		rand(4..6).times.map { ('a'..'z').to_a.sample }.join
+	end
+
+	context "without any input" do
+		let(:lives) { rand(10) }
+		let(:word) { random_valid_word }
+		let(:input) { StringIO.new }
+		it "should welcome the user, invite a guess and just exit" do
+			hangman
+			expect(output.string).to eq("")
+			hangman.play
+			dashes = word.size.times.map { "_" }.join(" ")
+			expect(output.string).to eq(<<EOF)
+Welcome to hangman.
+#{lives} lives remaining.
+#{dashes}
+Please enter a letter:
+EOF
 		end
 	end
 
-	describe "#play" do
-		let(:lives) { 3 }
-		let(:word) { "abc" }
-
-		before do
-			expect(view).to receive(:begin_game)	
-		end
-
-		context "when too many wrong guesses are made" do
-			before do
-				expect(view).to receive(:ask_for_letter).and_return("Z").exactly(3).times
-				expect(view).to receive(:report_incorrect_guess).exactly(3).times
-			end
-
-			it "it reports the game as lost" do
-				expect(view).to receive(:report_game_lost)
-				hangman.play
-			end
-		end
-
-		context "when correct guesses are made" do
-			before do
-				expect(view).to receive(:ask_for_letter).exactly(3).times.and_return("A", "B", "C")
-				expect(view).to receive(:report_correct_guess).exactly(3).times
-			end
-
-			it "it reports the game as won" do
-				expect(view).to receive(:report_game_won)
-				hangman.play
-			end
+	context "with only wrong guesses" do
+		let(:lives) { 1 }
+		let(:word) { "a" }
+		let(:input) { StringIO.new("z\n") }
+		it "should report the game as lost" do
+			hangman.play
+			expect(output.string).to eq(<<EOF)
+Welcome to hangman.
+1 lives remaining.
+_
+Please enter a letter:
+Sorry, you lost. The word was "a".
+EOF
 		end
 	end
+
+	context "with a correct guess" do
+		let(:lives) { 1 }
+		let(:word) { "aa" }
+		let(:input) { StringIO.new("a\n") }
+		it "should report the game as won" do
+			hangman.play
+			expect(output.string).to eq(<<EOF)
+Welcome to hangman.
+1 lives remaining.
+_ _
+Please enter a letter:
+You won: the word was "aa".
+EOF
+		end
+	end
+
+	context "with two correct guesses" do
+		let(:lives) { 1 }
+		let(:word) { "ab" }
+		let(:input) { StringIO.new("b\na\n") }
+		it "should report the game as won" do
+			hangman.play
+			expect(output.string).to eq(<<EOF)
+Welcome to hangman.
+1 lives remaining.
+_ _
+Please enter a letter:
+1 lives remaining.
+_ b
+Please enter a letter:
+You won: the word was "ab".
+EOF
+		end
+	end
+
 end
