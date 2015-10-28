@@ -32,8 +32,13 @@ class Hangman
   end
 end
 
-view = GameView.new
+view = GameView.new(STDIN, STDOUT)
 state = GameState.new(8, "bottle")
 hangman = Hangman.new(view, state)
 
+
 hangman.play if __FILE__==$0 #plays hangman if only called from command line
+
+# TODO
+#dependency injection
+#pass input/output objects to the game view constructor

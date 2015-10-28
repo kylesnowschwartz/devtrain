@@ -1,7 +1,12 @@
 class GameView
+	def initialize(input, output)
+		@input = input
+		@output = output
+	end
+
 	def begin_game(state)
 		clear_screen
-		puts "Welcome to hangman. Guess a letter."
+		@output.puts "Welcome to hangman. Guess a letter."
 		print_board(state)
 	end
 
