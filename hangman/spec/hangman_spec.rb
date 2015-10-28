@@ -1,30 +1,49 @@
 require './hangman.rb'
 
 RSpec.describe Hangman do
-	let(:hangman) { Hangman.new(8, "bottle") } # check out subject instead of let
+	let(:lives) { 8 }
+	let(:word) { "bottle" }
+	let(:state) { GameState.new(lives, word) } #instance double here?
+	# let(:state) { instance_double("GameState", :finished? => true, :lives_remaining => 0) }
+	let(:view) { instance_double("GameView") }
+	let(:hangman) { Hangman.new(view, state) } # check out subject instead of let
 
 	describe "#initialize" do
-		context "with a correct arguments" do
-			it "sets #word to an array of uppercase letters" do
-				expect(hangman.word).to eq(["B", "O", "T", "T", "L", "E"]) # %w(B O T T L E)
-			end
-		end
-
-		context "with an incorrect arguments" do
-			it "raises an error when given 0 lives" do
-				expect {Hangman.new(0, "bottle")}.to raise_error("The number of lives must be greater than zero")
-			end
-
-			it "raises an error when given a word less than 3 letters long" do
-				expect {Hangman.new(3, "at")}.to raise_error("The word must have 3 or more letters")
-			end
+		it "is initialized" do
+			expect{ hangman }.to_not raise_error
 		end
 	end
 
 	describe "#play" do
-		xit "takes at least n turns equal to the amount of uniq letters in word" do
-			STDIN.stub(:gets) {"b"}
-			expect(hangman.play).to eq("Sorry, you're dead.")
+		let(:lives) { 3 }
+		let(:word) { "abc" }
+
+		before do
+			expect(view).to receive(:begin_game)	
+		end
+
+		context "when too many wrong guesses are made" do
+			before do
+				expect(view).to receive(:ask_for_letter).and_return("Z").exactly(3).times
+				expect(view).to receive(:report_incorrect_guess).exactly(3).times
+			end
+
+			it "it reports the game as lost" do
+				expect(view).to receive(:report_game_lost)
+				hangman.play
+			end
+		end
+
+		context "when correct guesses are made" do
+			before do
+				expect(view).to receive(:ask_for_letter).exactly(3).times.and_return("A", "B", "C")
+				expect(view).to receive(:report_correct_guess).exactly(3).times
+			end
+
+			it "it reports the game as won" do
+				expect(view).to receive(:report_game_won)
+				hangman.play
+			end
 		end
 	end
 end

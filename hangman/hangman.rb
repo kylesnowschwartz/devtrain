@@ -2,44 +2,38 @@ require './gamestate.rb'
 require './gameview.rb'
 
 class Hangman
-  attr_reader :word
-
-  def initialize(lives, word)
-    raise ArgumentError.new("The number of lives must be greater than zero") unless lives > 0
-    raise ArgumentError.new("The word must have 3 or more letters") unless word.chars.count > 2
-    @word = parse_word(word)
-    @state = GameState.new(lives, @word)
-    @view = GameView.new(@state) # TODO: inject this as dependancy in constructor
+  def initialize(view, state)
+    @state = state
+    @view = view
   end
 
   def play
-    @view.clear_screen
-    puts "Welcome to hangman. Guess a letter."
-    @view.print_board
+    @view.begin_game(@state)
+
     until @state.finished?
       take_turn
     end
-    @view.report_game_result
+
+    if @state.lives_remaining == 0
+      @view.report_game_lost
+    else
+      @view.report_game_won
+    end
   end
 
   private
 
   def take_turn
     if @state.submit_guess(@view.ask_for_letter)
-      @view.clear_screen
-      @view.report_success
+      @view.report_correct_guess(@state)
     else
-      @view.clear_screen
-      @view.report_failure
+      @view.report_incorrect_guess(@state)
     end
-    @view.print_gamestate
-  end
-
-  def parse_word(word)
-    word.upcase.chars
   end
 end
 
-hangman = Hangman.new(8, "bottle")
+view = GameView.new
+state = GameState.new(8, "bottle")
+hangman = Hangman.new(view, state)
 
 hangman.play if __FILE__==$0 #plays hangman if only called from command line

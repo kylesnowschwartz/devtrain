@@ -1,34 +1,48 @@
 require './gamestate.rb'
 
 RSpec.describe GameState do
-	let(:game) { GameState.new(8, "bottle".upcase.chars)}
-	let(:game_with_zero_lives) { GameState.new(0, "bottle".upcase.chars)}
+	let(:word) { "bottle" }
+	let(:lives) { 8 }
+	let(:game) { GameState.new(lives, word) }
 
 	describe "#initialize" do
-		it "sets #word to an array of uppercase letters" do
-			expect(game.word).to eq(["B", "O", "T", "T", "L", "E"]) 
+
+		context "with a correct arguments" do
+			it "sets #word to an array of uppercase letters" do
+				expect(game.word).to eq(["B", "O", "T", "T", "L", "E"]) # %w(B O T T L E)
+			end
+
+			it "sets #lives_remaining to the correct number of lives" do
+				expect(game.lives_remaining).to eq 8
+			end
+
+			it "sets #guessed_letters to an empty array" do
+				expect(game.guessed_letters).to eq([])
+			end
+
+			it "sets #remaining_letters to an array of letters" do
+				expect(game.remaining_letters).to eq(["B", "O", "T", "T", "L", "E"])
+			end
+
+			it "sets #board to an array of underscores" do
+				expect(game.board).to eq(["_", "_", "_", "_", "_", "_"])
+			end
 		end
 
-		it "sets #lives_remaining to the correct number of lives" do
-			expect(game.lives_remaining).to eq 8
-		end
+		context "with an incorrect arguments" do
+			it "raises an error when given 0 lives" do
+				expect { GameState.new(0, "bottle") }.to raise_error("The number of lives must be greater than zero")
+			end
 
-		it "sets #guessed_letters to an empty array" do
-			expect(game.guessed_letters).to eq([])
-		end
-
-		it "sets #remaining_letters to an array of letters" do
-			expect(game.remaining_letters).to eq(["B", "O", "T", "T", "L", "E"])
-		end
-
-		it "sets #board to an array of underscores" do
-			expect(game.board).to eq(["_", "_", "_", "_", "_", "_"])
+			it "raises an error when given a word less than 3 letters long" do
+				expect { GameState.new(3, "at") }.to raise_error("The word must have 3 or more letters")
+			end
 		end
 	end
 
 	describe "#subtract_life" do
 		it "subtracts a life" do
-			expect(game.subtract_life).to eq(7)
+			expect(game.subtract_life).to eq 7
 		end
 	end
 
@@ -40,8 +54,13 @@ RSpec.describe GameState do
 		end
 
 		context "if no lives remaining" do
+			let(:word) { "bottle" }
+			let(:lives) { 1 }
+			before do
+				game.subtract_life
+			end
 			it "returns true" do
-				expect(game_with_zero_lives.finished?).to be true
+				expect(game.finished?).to be true
 			end
 		end
 	end
@@ -63,13 +82,13 @@ RSpec.describe GameState do
 		describe "#submit_guess" do
 			context "correct guess" do
 				it "returns true" do
-					expect(game.submit_guess("B")).to be_truthy
+					expect(game.submit_guess("B")).to be true
 				end
 			end
 
 			context "incorrect guess" do
 				it "returns false" do
-					expect(game.submit_guess("Q")).to be_falsey
+					expect(game.submit_guess("Q")).to be false
 				end
 			end
 		end

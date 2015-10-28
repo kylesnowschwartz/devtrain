@@ -1,7 +1,28 @@
 class GameView
+	def begin_game(state)
+		clear_screen
+		puts "Welcome to hangman. Guess a letter."
+		print_board(state)
+	end
 
-	def initialize(state)
-		@state = state
+	def report_game_lost
+    puts "Sorry, you're dead."
+	end
+
+	def report_game_won
+    puts "You guessed correctly! You live to see another day"
+	end
+
+	def report_correct_guess(state)
+		clear_screen
+	  puts "You guessed correctly!"
+	  print_gamestate(state)
+	end
+
+	def report_incorrect_guess(state)
+		clear_screen
+	  puts "Sorry, you guessed incorrectly"
+	  print_gamestate(state)
 	end
 
 	def ask_for_letter
@@ -19,40 +40,24 @@ class GameView
 	  alphabet.include?(letter)
 	end
 
-	def report_success
-	  puts "You guessed correctly!"
-	end
-
-	def report_failure
-	  puts "Sorry, you guessed incorrectly"
-	end
-
 	def print_line
 	  puts "_" * 40
 	end
 
+	def print_gamestate(state)
+	  puts "Thusfar, you've guessed:"
+	  puts state.guessed_letters.uniq.join(" ")
+	  puts "You have #{state.remaining_letters.length} letters remaining"
+	  puts "You have #{state.lives_remaining} lives remaining"
+	  print_board(state)
+	  puts "Guess Again:" unless state.finished?
+	end
+
+	def print_board(state)
+	  puts state.board.join(" ")
+	end
+
 	def clear_screen
 	  system "clear"
-	end
-
-	def report_game_result
-	  if @state.lives_remaining == 0
-	    puts "Sorry, you're dead."
-	  else
-	    puts "You guessed correctly! You live to see another day"
-	  end
-	end
-
-	def print_gamestate
-	  puts "Thusfar, you've guessed:"
-	  puts @state.guessed_letters.uniq.join(" ")
-	  puts "You have #{@state.remaining_letters.length} letters remaining"
-	  puts "You have #{@state.lives_remaining} lives remaining"
-	  print_board
-	  puts "Guess Again:" unless @state.finished?
-	end
-
-	def print_board
-	  puts @state.board.join(" ")
 	end
 end
