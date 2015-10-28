@@ -4,7 +4,7 @@ RSpec.describe Hangman do
 	let(:lives) { 8 }
 	let(:word) { "bottle" }
 	let(:state) { GameState.new(lives, word) } #instance double here?
-	# let(:state) { instance_double("GameState", :finished? => true, :lives_remaining => 0) }
+	# let(:state) { instance_double("GameState") }
 	let(:view) { instance_double("GameView") }
 	let(:hangman) { Hangman.new(view, state) } # check out subject instead of let
 

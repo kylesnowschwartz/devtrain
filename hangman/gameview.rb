@@ -11,31 +11,31 @@ class GameView
 	end
 
 	def report_game_lost
-    puts "Sorry, you're dead."
+    @output.puts "Sorry, you're dead."
 	end
 
 	def report_game_won
-    puts "You guessed correctly! You live to see another day"
+    @output.puts "You guessed correctly! You live to see another day"
 	end
 
 	def report_correct_guess(state)
 		clear_screen
-	  puts "You guessed correctly!"
+	  @output.puts "You guessed correctly!"
 	  print_gamestate(state)
 	end
 
 	def report_incorrect_guess(state)
 		clear_screen
-	  puts "Sorry, you guessed incorrectly"
+	  @output.puts "Sorry, you guessed incorrectly"
 	  print_gamestate(state)
 	end
 
 	def ask_for_letter
-	  while user_input = gets.upcase.chomp
+	  while user_input = @input.gets.upcase.chomp
 	    if validate_letter(user_input)
 	      return user_input
 	    else
-	      puts "Please select a single letter in the English alphabet:"
+	      @output.puts "Please select a single letter in the English alphabet:"
 	    end
 	  end
 	end
@@ -46,20 +46,20 @@ class GameView
 	end
 
 	def print_line
-	  puts "_" * 40
+	  @output.puts "_" * 40
 	end
 
 	def print_gamestate(state)
-	  puts "Thusfar, you've guessed:"
-	  puts state.guessed_letters.uniq.join(" ")
-	  puts "You have #{state.remaining_letters.length} letters remaining"
-	  puts "You have #{state.lives_remaining} lives remaining"
+	  @output.puts "Thusfar, you've guessed:"
+	  @output.puts state.guessed_letters.uniq.join(" ")
+	  @output.puts "You have #{state.remaining_letters.length} letters remaining"
+	  @output.puts "You have #{state.lives_remaining} lives remaining"
 	  print_board(state)
-	  puts "Guess Again:" unless state.finished?
+	  @output.puts "Guess Again:" unless state.finished?
 	end
 
 	def print_board(state)
-	  puts state.board.join(" ")
+	  @output.puts state.board.join(" ")
 	end
 
 	def clear_screen
