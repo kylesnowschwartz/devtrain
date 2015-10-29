@@ -50,11 +50,11 @@ RSpec.describe GameState do
 		end
 
 		context "if no lives remaining" do
-			let(:word) { "bottle" }
 			let(:lives) { 1 }
 			before do
 				game.subtract_life
 			end
+			
 			it "returns true" do
 				expect(game.finished?).to be true
 			end

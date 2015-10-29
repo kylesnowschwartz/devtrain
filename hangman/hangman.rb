@@ -25,9 +25,9 @@ class Hangman
 
   def take_turn
     if @state.submit_guess(@view.ask_for_letter)
-      @view.report_correct_guess(@state)
+      @view.report_correct_guess
     else
-      @view.report_incorrect_guess(@state)
+      @view.report_incorrect_guess
     end
   end
 end

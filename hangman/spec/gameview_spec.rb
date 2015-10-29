@@ -26,13 +26,13 @@ RSpec.describe GameView do
 			end
 		end
 
-		context "given more than 1 letter" do
+		context "given anything other than a single English letter" do
 			before do
-				expect(input).to receive(:gets).and_return("bb", "b")
+				expect(input).to receive(:gets).and_return("bb", " ", "1", "ÿ", ";P", "b")
 			end
 
-			it "should say 'Please select a single letter in the English alphabet:' when run" do
-				expect(output).to receive(:puts).with("Please select a single letter in the English alphabet:")
+			it "should report invalid input" do
+				expect(view).to receive(:report_invalid_input).exactly(5).times
 				expect(view.ask_for_letter).to eq "B"
 			end
 		end
