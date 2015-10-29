@@ -33,14 +33,13 @@ class GameState
 	  all_indexes_for_letter(guess).each { |index| @board[index] = @word[index] }
 	end
 
+	def letters_remaining
+		@word - @guessed_letters
+	end
 private
 
 	def all_indexes_for_letter(letter)
 	  @word.each_index.select { |index| @word[index] == letter } # =>[0, 2, 6] etc
-	end
-
-	def letters_remaining
-		@word - @guessed_letters
 	end
 
 	def parse_word(word)
