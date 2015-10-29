@@ -38,5 +38,4 @@ view = GameView.new(STDIN, STDOUT)
 state = GameState.new(lives, word)
 hangman = Hangman.new(view, state)
 
-
 hangman.play if __FILE__==$0 #plays hangman if only called from command line

@@ -20,10 +20,6 @@ RSpec.describe GameState do
 				expect(game.guessed_letters).to eq([])
 			end
 
-			it "sets #remaining_letters to an array of letters" do
-				expect(game.remaining_letters).to eq(["B", "O", "T", "T", "L", "E"])
-			end
-
 			it "sets #board to an array of underscores" do
 				expect(game.board).to eq(["_", "_", "_", "_", "_", "_"])
 			end

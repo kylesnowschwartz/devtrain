@@ -1,4 +1,6 @@
 class GameView
+	ALPHABET = ('A'..'Z').to_a
+
 	def initialize(input, output)
 		@input = input
 		@output = output
@@ -41,12 +43,7 @@ class GameView
 	end
 
 	def validate_letter(letter)
-	  alphabet = ('A'..'Z').to_a
-	  alphabet.include?(letter)
-	end
-
-	def print_line
-	  @output.puts "_" * 40
+	  ALPHABET.include?(letter)
 	end
 
 	def print_gamestate(state)
