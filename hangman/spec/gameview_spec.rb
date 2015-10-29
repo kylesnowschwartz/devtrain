@@ -1,4 +1,4 @@
-require "./gameview.rb"
+require './gameview.rb'
 
 RSpec.describe GameView do
 	let(:input) { double("input") }
