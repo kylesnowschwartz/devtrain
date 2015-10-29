@@ -49,7 +49,7 @@ RSpec.describe GameState do
 			end
 		end
 
-		context "if no lives remaining" do
+		context "with no lives remaining" do
 			let(:lives) { 1 }
 			before do
 				game.subtract_life
@@ -76,13 +76,13 @@ RSpec.describe GameState do
 		end
 
 		describe "#submit_guess" do
-			context "correct guess" do
+			context "with a correct guess" do
 				it "returns true" do
 					expect(game.submit_guess("B")).to be true
 				end
 			end
 
-			context "incorrect guess" do
+			context "with a incorrect guess" do
 				it "returns false" do
 					expect(game.submit_guess("Q")).to be false
 				end
