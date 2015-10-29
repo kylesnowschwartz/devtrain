@@ -1,4 +1,4 @@
-require './hangman.rb'
+require_relative '../lib/hangman.rb'
 
 RSpec.describe Hangman do
 	let(:lives) { 8 }

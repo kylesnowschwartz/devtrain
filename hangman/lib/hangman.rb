@@ -1,5 +1,5 @@
-require './gamestate.rb'
-require './gameview.rb'
+require 'gamestate'
+require 'gameview'
 
 class Hangman
   def initialize(view, state)

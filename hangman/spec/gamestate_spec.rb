@@ -1,4 +1,4 @@
-require './gamestate.rb'
+require_relative '../lib/gamestate.rb'
 
 RSpec.describe GameState do
 	let(:word) { "bottle" }
