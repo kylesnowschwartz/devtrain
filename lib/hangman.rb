@@ -1,20 +1,18 @@
-require_relative './gamestate.rb'
-require_relative './gameview.rb'
+require_relative './game_state.rb'
+require_relative './game_view.rb'
 
 class Hangman
   def initialize(view, state)
-    @state = state
+    @state = state # game
     @view = view
   end
 
   def play
-    @view.begin_game(@state)
+    @view.begin_game # TODO better name for begin_game, initialize view with state
 
-    until @state.finished?
-      take_turn
-    end
-
-    if @state.lives_remaining == 0
+    take_turn until @state.finished?
+      
+    if @state.lives_remaining == 0 # player_dead? out of lives?
       @view.report_game_lost
     else
       @view.report_game_won
@@ -24,7 +22,9 @@ class Hangman
   private
 
   def take_turn
-    if @state.submit_guess(@view.ask_for_letter)
+    guess = @view.ask_for_letter
+    
+    if @state.submit_guess(guess)
       @view.report_correct_guess
     else
       @view.report_incorrect_guess
@@ -32,10 +32,12 @@ class Hangman
   end
 end
 
+
+# TODO put this in a seperate file
 lives = 8
 word = "bottle"
-view = GameView.new(STDIN, STDOUT)
 state = GameState.new(lives, word)
+view = GameView.new(STDIN, STDOUT, state)
 hangman = Hangman.new(view, state)
 
 hangman.play if __FILE__==$0 #plays hangman if only called from command line

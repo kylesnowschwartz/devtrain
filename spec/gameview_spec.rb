@@ -1,10 +1,10 @@
-require_relative '../lib/gameview.rb'
+require_relative '../lib/game_view.rb'
 
 RSpec.describe GameView do
 	let(:input) { double("input") }
 	let(:output) { double("output") }
-	subject(:state) { instance_double("GameState") }
-	subject(:view) { GameView.new(input, output) }
+	let(:state) { instance_double("GameState") }
+	let(:view) { GameView.new(input, output, state) }
 
 	describe "#ask_for_letter" do
 		context "given a single lowercase letter" do
@@ -47,7 +47,62 @@ RSpec.describe GameView do
 
 		it "should print the board" do
 			expect(output).to receive(:puts).with("_")
-			view.begin_game(state)
+			view.begin_game
+		end
+	end
+
+	describe "#report_correct_guess" do
+		context "game is not finished" do
+			let(:state) do
+				instance_double(
+					GameState,
+					guessed_letters: ["A"],
+					letters_remaining: ["B"],
+					lives_remaining: 1,
+					board: ["_"]
+				)
+			end
+
+			before do
+				expect(state).to receive(:finished?).and_return(false)
+			end
+
+			it "should print the board" do
+				expect(output).to receive(:puts).with("You guessed correctly!")
+				expect(output).to receive(:puts).with("Thusfar, you've guessed:")
+				expect(output).to receive(:puts).with("A")
+				expect(output).to receive(:puts).with("You have 1 letters remaining")
+				expect(output).to receive(:puts).with("You have 1 lives remaining")
+				expect(output).to receive(:puts).with("_")
+				expect(output).to receive(:puts).with("Guess Again:")
+				view.report_correct_guess
+			end
+		end
+
+		context "game is finished" do
+			let(:state) do
+				instance_double(
+					GameState,
+					guessed_letters: ["A"],
+					letters_remaining: ["B"],
+					lives_remaining: 1,
+					board: ["_"]
+				)
+			end
+
+			before do
+				expect(state).to receive(:finished?).and_return(true)
+			end
+
+			it "should print the board" do
+				expect(output).to receive(:puts).with("You guessed correctly!")
+				expect(output).to receive(:puts).with("Thusfar, you've guessed:")
+				expect(output).to receive(:puts).with("A")
+				expect(output).to receive(:puts).with("You have 1 letters remaining")
+				expect(output).to receive(:puts).with("You have 1 lives remaining")
+				expect(output).to receive(:puts).with("_")
+				view.report_correct_guess
+			end
 		end
 	end
 end
