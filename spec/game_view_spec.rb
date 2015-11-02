@@ -52,16 +52,17 @@ RSpec.describe GameView do
 	end
 
 	describe "#report_correct_guess" do
+		let(:state) do
+			instance_double(
+				GameState,
+				guessed_letters: ["A"],
+				letters_remaining: ["B"],
+				lives_remaining: 1,
+				board: ["_"]
+			)
+		end
+
 		context "game is not finished" do
-			let(:state) do
-				instance_double(
-					GameState,
-					guessed_letters: ["A"],
-					letters_remaining: ["B"],
-					lives_remaining: 1,
-					board: ["_"]
-				)
-			end
 
 			before do
 				expect(state).to receive(:finished?).and_return(false)
@@ -69,26 +70,13 @@ RSpec.describe GameView do
 
 			it "should print the board" do
 				expect(output).to receive(:puts).with("You guessed correctly!")
-				expect(output).to receive(:puts).with("Thusfar, you've guessed:")
-				expect(output).to receive(:puts).with("A")
-				expect(output).to receive(:puts).with("You have 1 letters remaining")
-				expect(output).to receive(:puts).with("You have 1 lives remaining")
-				expect(output).to receive(:puts).with("_")
+				standard_report_message
 				expect(output).to receive(:puts).with("Guess Again:")
 				view.report_correct_guess
 			end
 		end
 
 		context "game is finished" do
-			let(:state) do
-				instance_double(
-					GameState,
-					guessed_letters: ["A"],
-					letters_remaining: ["B"],
-					lives_remaining: 1,
-					board: ["_"]
-				)
-			end
 
 			before do
 				expect(state).to receive(:finished?).and_return(true)
@@ -96,13 +84,47 @@ RSpec.describe GameView do
 
 			it "should print the board" do
 				expect(output).to receive(:puts).with("You guessed correctly!")
-				expect(output).to receive(:puts).with("Thusfar, you've guessed:")
-				expect(output).to receive(:puts).with("A")
-				expect(output).to receive(:puts).with("You have 1 letters remaining")
-				expect(output).to receive(:puts).with("You have 1 lives remaining")
-				expect(output).to receive(:puts).with("_")
+				standard_report_message
 				view.report_correct_guess
 			end
 		end
+	end
+
+	describe "#report_incorrect_guess" do
+		context "game is not finished" do
+
+			before do
+				expect(state).to receive(:finished?).and_return(false)
+			end
+
+			it "should print the board" do
+				expect(output).to receive(:puts).with("Sorry, you guessed incorrectly")
+				standard_report_message
+				expect(output).to receive(:puts).with("Guess Again:")
+				view.report_incorrect_guess
+			end
+		end
+
+
+		context "game is finished" do
+
+			before do
+				expect(state).to receive(:finished?).and_return(true)
+			end
+
+			it "should print the board" do
+				expect(output).to receive(:puts).with("Sorry, you guessed incorrectly")
+				standard_report_message
+				view.report_incorrect_guess
+			end
+		end
+	end
+
+	def standard_report_message
+		expect(output).to receive(:puts).with("Thusfar, you've guessed:")
+		expect(output).to receive(:puts).with("A")
+		expect(output).to receive(:puts).with("You have 1 letters remaining")
+		expect(output).to receive(:puts).with("You have 1 lives remaining")
+		expect(output).to receive(:puts).with("_")
 	end
 end
