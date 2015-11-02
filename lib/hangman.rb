@@ -8,7 +8,7 @@ class Hangman
   end
 
   def play
-    @view.begin_game # TODO better name for begin_game, initialize view with state
+    @view.welcome_player
 
     take_turn until @state.finished?
       
@@ -31,13 +31,3 @@ class Hangman
     end
   end
 end
-
-
-# TODO put this in a seperate file
-lives = 8
-word = "bottle"
-state = GameState.new(lives, word)
-view = GameView.new(STDIN, STDOUT, state)
-hangman = Hangman.new(view, state)
-
-hangman.play if __FILE__==$0 #plays hangman if only called from command line

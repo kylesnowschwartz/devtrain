@@ -1,4 +1,4 @@
-class GameView # TODO underscores for file name
+class GameView
 	attr_reader :state
 
 	ALPHABET = ('A'..'Z')
@@ -9,15 +9,14 @@ class GameView # TODO underscores for file name
 		@state = state
 	end
 
-	def begin_game
-		@state = state
+	def welcome_player
 		clear_screen
 		print "Welcome to hangman. Guess a letter."
 		print_board
 	end
 
 	def ask_for_letter
-	  while user_input = @input.gets.upcase.chomp # TODO get_normalized_input
+	  while user_input = get_normalized_input
 	    return user_input if valid_letter?(user_input)
       report_invalid_input
 	  end
@@ -49,14 +48,22 @@ private
 	  ALPHABET.include?(letter)
 	end
 
+	def get_normalized_input
+		@input.gets.upcase.chomp
+	end
+
 	# TODO test this method
 	def print_gamestate
 	  print "Thusfar, you've guessed:"
-	  print state.guessed_letters.uniq.join(" ") # TODO .guessed_letters.stringify
+	  print  guessed_letters_to_string
 	  print "You have #{state.letters_remaining.length} letters remaining" # TODO Grammar.
 	  print "You have #{state.lives_remaining} lives remaining"
 	  print_board
 	  print "Guess Again:" unless state.finished?
+	end
+
+	def guessed_letters_to_string
+		state.guessed_letters.uniq.join(" ")
 	end
 
 	def print_board

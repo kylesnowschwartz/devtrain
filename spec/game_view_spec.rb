@@ -39,7 +39,7 @@ RSpec.describe GameView do
 		end
 	end
 
-	describe "#begin_game" do
+	describe "#welcome_player" do
 		before do
 			expect(output).to receive(:puts).with("Welcome to hangman. Guess a letter.")
 			expect(state).to receive(:board).and_return(["_"])
@@ -47,7 +47,7 @@ RSpec.describe GameView do
 
 		it "should print the board" do
 			expect(output).to receive(:puts).with("_")
-			view.begin_game
+			view.welcome_player
 		end
 	end
 

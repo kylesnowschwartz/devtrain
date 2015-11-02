@@ -8,8 +8,8 @@ RSpec.describe GameState do
 	describe "#initialize" do
 
 		context "with a correct arguments" do
-			it "sets #word to an array of uppercase letters" do
-				expect(game.word).to eq(["B", "O", "T", "T", "L", "E"]) # %w(B O T T L E)
+			xit "sets #letters to an array of uppercase letters" do
+				expect(game.letters).to eq(["B", "O", "T", "T", "L", "E"]) # %w(B O T T L E)
 			end
 
 			it "sets #lives_remaining to the correct number of lives" do
@@ -33,12 +33,6 @@ RSpec.describe GameState do
 			it "raises an error when given a word less than 3 letters long" do
 				expect { GameState.new(3, "at") }.to raise_error("The word must have 3 or more letters")
 			end
-		end
-	end
-
-	xdescribe "#subtract_life" do
-		it "subtracts a life" do
-			expect(game.subtract_life).to eq 7
 		end
 	end
 
