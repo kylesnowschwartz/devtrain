@@ -8,10 +8,6 @@ RSpec.describe GameState do
 	describe "#initialize" do
 
 		context "with a correct arguments" do
-			xit "sets #letters to an array of uppercase letters" do
-				expect(game.letters).to eq(["B", "O", "T", "T", "L", "E"]) # %w(B O T T L E)
-			end
-
 			it "sets #lives_remaining to the correct number of lives" do
 				expect(game.lives_remaining).to eq 8
 			end
@@ -55,16 +51,17 @@ RSpec.describe GameState do
 		end
 	end
 
-	xdescribe "#replace_blank_tile_with_guessed_letter" do
+	describe "#board" do
 		context "with correct letter" do
 			it "replaces a blank tile" do
-				game.replace_blank_tile_with_guessed_letter("B")
+				game.submit_guess("B")
 				expect(game.board).to eq(["B", "_", "_", "_", "_", "_"])
 			end
 		end
 
 		context "with incorrect letter" do
 			it "does not replace a blank tile" do
+				game.submit_guess("Z")
 				expect(game.board).to eq(["_", "_", "_", "_", "_", "_"])
 			end
 		end

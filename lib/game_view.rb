@@ -52,7 +52,6 @@ private
 		@input.gets.upcase.chomp
 	end
 
-	# TODO test this method
 	def print_gamestate
 	  print "Thusfar, you've guessed:"
 	  print  guessed_letters_to_string

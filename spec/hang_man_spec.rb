@@ -3,7 +3,7 @@ require_relative '../lib/hangman.rb'
 RSpec.describe Hangman do
   let(:lives) { 8 }
   let(:word) { "bottle" }
-  let(:state) { GameState.new(lives, word) } #instance double here?
+  let(:state) { GameState.new(lives, word) }
   let(:view) { instance_double("GameView") }
   subject(:hangman) { Hangman.new(view, state) }
 

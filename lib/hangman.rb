@@ -2,17 +2,17 @@ require_relative './game_state.rb'
 require_relative './game_view.rb'
 
 class Hangman
-  def initialize(view, state)
-    @state = state # game
+  def initialize(view, game)
+    @game = game
     @view = view
   end
 
   def play
     @view.welcome_player
 
-    take_turn until @state.finished?
+    take_turn until @game.finished?
       
-    if @state.lives_remaining == 0 # player_dead? out of lives?
+    if @game.zero_lives_remaining?
       @view.report_game_lost
     else
       @view.report_game_won
@@ -24,7 +24,7 @@ class Hangman
   def take_turn
     guess = @view.ask_for_letter
     
-    if @state.submit_guess(guess)
+    if @game.submit_guess(guess)
       @view.report_correct_guess
     else
       @view.report_incorrect_guess
