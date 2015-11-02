@@ -91,6 +91,16 @@ RSpec.describe GameView do
 	end
 
 	describe "#report_incorrect_guess" do
+		let(:state) do
+			instance_double(
+				GameState,
+				guessed_letters: ["A"],
+				letters_remaining: ["B"],
+				lives_remaining: 1,
+				board: ["_"]
+			)
+		end
+		
 		context "game is not finished" do
 
 			before do
