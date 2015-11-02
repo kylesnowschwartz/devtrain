@@ -42,7 +42,7 @@ class GameView
     print "You guessed correctly! You live to see another day"
 	end
 	
-private
+	private
 
 	def valid_letter?(letter)
 	  ALPHABET.include?(letter)
@@ -74,7 +74,7 @@ private
 	end
 
 	def print(string)
-		@output.puts string
+		@output.puts(string)
 	end
 
 	def report_invalid_input

@@ -18,7 +18,7 @@ RSpec.describe Hangman do
     let(:word) { "abc" }
 
     before do
-      expect(view).to receive(:welcome_player)  
+      expect(view).to receive(:welcome_player)
     end
 
     context "when too many wrong guesses are made" do
